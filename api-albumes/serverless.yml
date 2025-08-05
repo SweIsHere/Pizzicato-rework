@@ -1,4 +1,4 @@
-org: mirandasalazar
+org: angelt
 service: api-album
 
 provider:
@@ -7,7 +7,7 @@ provider:
   memorySize: 512
   timeout: 29
   iam:
-    role: arn:aws:iam::060098569939:role/LabRole
+    role: arn:aws:iam::183631346577:user/swe
   environment:
     TABLE_NAME: ${sls:stage}-t_album
 

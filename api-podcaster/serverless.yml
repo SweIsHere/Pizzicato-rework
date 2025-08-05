@@ -1,4 +1,4 @@
-org: dillescas
+org: angelt
 service: api-podcaster
 
 provider:
@@ -7,7 +7,7 @@ provider:
   memorySize: 512
   timeout: 30
   iam:
-    role: arn:aws:iam::940376243370:role/LabRole
+    role: arn:aws:iam::183631346577:user/swe
   environment:
     PODCASTER_TABLE: ${sls:stage}-t_podcasters
     PODCASTS_TABLE: ${sls:stage}-t_podcasts

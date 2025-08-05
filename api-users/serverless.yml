@@ -9,7 +9,7 @@ provider:
   memorySize: 128
   timeout: 30
   iam:
-    role: arn:aws:iam::542697993719:role/LabRole
+    role: arn:aws:iam::183631346577:user/swe
   environment:
     # Definir nombres únicos para las tablas usando el stage
     TABLE_NAME_USERS: ${sls:stage}-Pt_users  # Nombre único para la tabla de usuarios
