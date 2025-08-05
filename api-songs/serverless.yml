@@ -8,7 +8,7 @@ provider:
   memorySize: 512
   timeout: 30
   iam:
-    role: arn:aws:iam::183631346577:user/swe
+    role: arn:aws:iam::183631346577:role/service-role/LambdasGeneral5
   environment:
     TABLE_NAME: ${sls:stage}-t_songs # modificar
 

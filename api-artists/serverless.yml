@@ -9,7 +9,7 @@ provider:
   memorySize: 128
   timeout: 30
   iam:
-    role: arn:aws:iam::183631346577:user/swe
+    role: arn:aws:iam::183631346577:role/service-role/LambdasGeneral5
   environment:
     # Definir nombres únicos para las tablas usando el stage
     TABLE_NAME_ARTISTS: ${sls:stage}-Pt_artists 
