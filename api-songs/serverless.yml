@@ -1,0 +1,154 @@
+org: andreacoa
+service: api-songs
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  # Default memory size for functions (default: 256MB)
+  memorySize: 512
+  timeout: 30
+  iam:
+    role: arn:aws:iam::123412341234:role/LabRole
+  environment:
+    TABLE_NAME: ${sls:stage}-t_songs # modificar
+
+functions:
+  get_all_songs:
+    handler: lambda_get_all.handler
+    events:
+      - http:
+          path: /songs/all
+          method: post
+          cors: true
+          integration: lambda
+  get_song_by_genre:
+    handler: lambda_getByGenre.handler
+    events:
+      - http:
+          path: /songs/genre
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
+  get_song_by_artist_email:
+    handler: lambda_getByArtistEmail.handler
+    events:
+      - http:
+          path: /songs/artist
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
+  get_song_by_id:
+    handler: lambda_getById.handler
+    events:
+      - http:
+          path: /songs/id
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
+  get_song_by_name:
+    handler: lambda_getByName.handler
+    events:
+      - http:
+          path: /songs/name
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
+  post_song:
+    handler: lambda_post_song.handler
+    events:
+      - http:
+          path: /songs/create
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
+    package:
+      include:
+        - node_modules/uuid/**
+      exclude:
+        - node_modules/**
+        - '!node_modules/uuid/**'
+# completar
+
+resources:
+  Resources:
+    TablaSongs:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: artist_id
+            AttributeType: S
+          - AttributeName: genre#release_date
+            AttributeType: S
+          - AttributeName: song_uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: artist_id
+            KeyType: HASH
+          - AttributeName: genre#release_date
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: song_uuid-index
+            KeySchema:
+              - AttributeName: song_uuid
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true

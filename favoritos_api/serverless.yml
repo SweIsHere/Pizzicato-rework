@@ -1,0 +1,56 @@
+org: org
+service: api-favorites-test
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 512
+  timeout: 30
+  iam:
+    role: arn:aws:iam::123412341234:role/LabRole
+  environment:
+    TABLE_NAME: ${sls:stage}-t_favorites
+
+functions:
+  add_favorite:
+    handler: lambda_addFavorite.lambda_handler
+    events:
+      - http:
+          path: /favorites/add
+          method: post
+          cors: true
+          integration: lambda
+  get_favorites:
+    handler: lambda_getFavorites.lambda_handler
+    events:
+      - http:
+          path: /favorites/mine
+          method: post
+          cors: true
+          integration: lambda
+  remove_favorite:
+    handler: lambda_removeFavorite.lambda_handler
+    events:
+      - http:
+          path: /favorites/remove
+          method: post
+          cors: true
+          integration: lambda
+
+resources:
+  Resources:
+    TablaFavorites:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: tenant_id
+            AttributeType: S
+          - AttributeName: date_added
+            AttributeType: S
+        KeySchema:
+          - AttributeName: tenant_id
+            KeyType: HASH
+          - AttributeName: date_added
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST

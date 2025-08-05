@@ -1,0 +1,362 @@
+openapi: 3.0.3
+info:
+  title: Artist Service API
+  description: API para gestionar artistas, autenticar usuarios, y manejar tokens de acceso.
+  version: 1.0.0
+  contact:
+    name: Soporte API
+    url: https://www.example.com/support
+    email: support@example.com
+
+servers:
+  - url: https://api.example.com/v1
+    description: API Server
+
+paths:
+  /artists/search:
+    post:
+      summary: Buscar artistas por nombre.
+      description: Busca artistas en la base de datos por su nombre. Realiza una búsqueda exacta con un índice GSI, o una búsqueda parcial si no se encuentran resultados exactos.
+      operationId: searchArtistByName
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del artista a buscar.
+                  example: "shakira"
+      responses:
+        '200':
+          description: Artistas encontrados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Artistas encontrados."
+                  artists:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        artist_id:
+                          type: string
+                          example: "artist123"
+                        name:
+                          type: string
+                          example: "Shakira"
+                        photo:
+                          type: string
+                          example: "https://example.com/photo.jpg"
+        '400':
+          description: Faltan parámetros en la solicitud.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Faltan los parámetros 'name'"
+        '404':
+          description: No se encontraron artistas.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No se encontraron artistas con el nombre proporcionado."
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error interno del servidor"
+
+  /artists/search-by-id:
+    post:
+      summary: Buscar artistas por nombre y ID.
+      description: Busca un artista por nombre e ID. Esta operación usa un índice GSI para filtrar por `name` y `artist_id`.
+      operationId: searchArtistByNameAndId
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del artista a buscar.
+                  example: "shakira"
+                artist_id:
+                  type: string
+                  description: ID único del artista.
+                  example: "artist123"
+      responses:
+        '200':
+          description: Artista encontrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Artista encontrado."
+                  artists:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        artist_id:
+                          type: string
+                          example: "artist123"
+                        name:
+                          type: string
+                          example: "Shakira"
+                        photo:
+                          type: string
+                          example: "https://example.com/photo.jpg"
+        '400':
+          description: Faltan parámetros en la solicitud.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Faltan los parámetros 'name' o 'artist_id'"
+        '404':
+          description: No se encontró el artista.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No se encontraron artistas con el nombre e ID proporcionados."
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error interno del servidor"
+
+  /artists/info:
+    post:
+      summary: Obtener información del artista.
+      description: Recupera la información del artista usando su `artist_id`.
+      operationId: getArtistInfo
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artist_id:
+                  type: string
+                  description: ID único del artista.
+                  example: "artist123"
+      responses:
+        '200':
+          description: Información del artista.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photo:
+                    type: string
+                    example: "https://example.com/photo.jpg"
+                  name:
+                    type: string
+                    example: "Shakira"
+                  info:
+                    type: string
+                    example: "Artista pop colombiana."
+        '400':
+          description: Faltan parámetros en la solicitud.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Falta el parámetro 'artist_id'"
+        '404':
+          description: No se encontró al artista.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario no encontrado"
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error interno del servidor"
+
+  /artists/authenticate:
+    post:
+      summary: Autenticar artista y generar token.
+      description: Autentica al artista usando su `artist_id` y `password`, y genera un token de acceso y un refresh token.
+      operationId: authenticateArtist
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artist_id:
+                  type: string
+                  description: ID único del artista.
+                  example: "artist123"
+                password:
+                  type: string
+                  description: Contraseña del artista.
+                  example: "supersecretpassword"
+      responses:
+        '200':
+          description: Autenticación exitosa, tokens generados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artist_id:
+                    type: string
+                    example: "artist123"
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ..."
+                  refresh_token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ..."
+                  expires_in:
+                    type: string
+                    example: "2024-12-01T12:00:00Z"
+        '400':
+          description: Faltan parámetros en la solicitud.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Faltan los parámetros 'artist_id' o 'password'"
+        '403':
+          description: Contraseña incorrecta o usuario no existe.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario no existe o contraseña incorrecta"
+        '500':
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error interno del servidor"
+
+  /artists/register:
+    post:
+      summary: Registrar un nuevo artista.
+      description: Registra un nuevo artista en la base de datos.
+      operationId: registerArtist
+      tags:
+        - Artists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artist_id:
+                  type: string
+                  description: ID único del artista.
+                  example: "artist123"
+                password:
+                  type: string
+                  description: Contraseña del artista.
+                  example: "supersecretpassword"
+                country:
+                  type: string
+                  description: País de origen del artista.
+                  example: "Colombia"
+                name:
+                  type: string
+                  description: Nombre del artista.
+                  example: "Shakira"
+                info:
+                  type: string
+                  description: Información adicional sobre el artista.
+                  example: "Cantante pop colombiana."
+      responses:
+        '200':
+          description: Artista registrado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User registered successfully"
+                  artist_id:
+                    type: string
+                    example: "artist123"
+        '400':
+          description: Faltan parámetros en la solicitud o el artista ya está registrado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message
