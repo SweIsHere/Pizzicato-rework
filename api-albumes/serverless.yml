@@ -1,0 +1,74 @@
+org: mirandasalazar
+service: api-album
+
+provider:
+  name: aws
+  runtime: python3.12
+  memorySize: 512
+  timeout: 29
+  iam:
+    role: arn:aws:iam::060098569939:role/LabRole
+  environment:
+    TABLE_NAME: ${sls:stage}-t_album
+
+functions:
+  getAlbums:
+    handler: albumQuery.lambda_handler
+    events:
+      - http:
+          path: albums
+          method: get
+
+
+  deleteAlbum:
+    handler: deleteAlbum.lambda_handler
+    events:
+      - http:
+          path: albums
+          method: delete
+
+  postAlbum:
+    handler: postAlbum.lambda_handler
+    events:
+      - http:
+          path: albums
+          method: post
+
+
+resources:
+  Resources:
+    AlbumTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: artist_id
+            AttributeType: S
+          - AttributeName: date#genre
+            AttributeType: S
+          - AttributeName: album_uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: artist_id
+            KeyType: HASH
+          - AttributeName: date#genre
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: UUIDIndex
+            KeySchema:
+              - AttributeName: album_uuid
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        LocalSecondaryIndexes:
+          - IndexName: Artist_DateIndex
+            KeySchema:
+              - AttributeName: artist_id
+                KeyType: HASH
+              - AttributeName: date#genre
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true
+        BillingMode: PAY_PER_REQUEST
