@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_ENDPOINTS } from "./config/api";
 
 function FavInstrument() {
   const [selectedInstrument, setSelectedInstrument] = useState("");
@@ -33,7 +34,7 @@ function FavInstrument() {
       };
 
       try {
-        const response = await axios.post(import.meta.env.VITE_API_BASE_URL, dataToSend);
+        const response = await axios.post(API_ENDPOINTS.users.register(), dataToSend);
         console.log("Response:", response.data);
         // Si la respuesta contiene un código de error, manejamos el error
         if (response.data.statusCode && response.data.statusCode !== 200) {

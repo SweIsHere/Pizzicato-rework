@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_ENDPOINTS } from "./config/api";
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ function SignIn() {
         password: formData.password,
       };
       // Hacer una llamada POST a la API
-      const response = await axios.post(import.meta.env.VITE_API_BASE_LOGIN, dataToSend);
+      const response = await axios.post(API_ENDPOINTS.users.login(), dataToSend);
 
       // Verificar si la respuesta contiene un error (statusCode 403)
       if (response.data.statusCode === 403) {

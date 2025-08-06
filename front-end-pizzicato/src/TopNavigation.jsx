@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Para redirigir
+import { API_ENDPOINTS } from './config/api';
 import {
   FaSearch,
   FaHashtag,
@@ -30,7 +31,7 @@ const TopNavigation = () => {
     // Realizar la solicitud a la API para obtener el username
     const fetchUsername = async () => {
       try {
-        const response = await axios.post(import.meta.env.VITE_API_USER_INFO, {
+        const response = await axios.post(API_ENDPOINTS.users.info(), {
           tenant_id: tenantId,
         }, {
           headers: {
@@ -61,7 +62,7 @@ const TopNavigation = () => {
     const tenantId = localStorage.getItem('tenant_id');
     
     try {
-      const response = await axios.post(import.meta.env.VITE_API_SONGS_BYNAME, {
+      const response = await axios.post(API_ENDPOINTS.songs.byName(), {
         name: searchTerm,
         tenant_id: tenantId,
       }, {

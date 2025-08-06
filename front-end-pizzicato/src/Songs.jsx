@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TopNavigation from "./TopNavigation";
 import Sidebar from "./Sidebar";
 import axios from "axios";
+import { API_ENDPOINTS } from "./config/api";
 
 function Songs() {
   const [songs, setSongs] = useState([]);
@@ -38,7 +39,7 @@ function Songs() {
 
       const requestBody = { tenant_id: tenantId, page: pageNum };
 
-      const response = await axios.post(import.meta.env.VITE_API_SONGS_ALL, requestBody, {
+      const response = await axios.post(API_ENDPOINTS.songs.all(), requestBody, {
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
@@ -75,7 +76,7 @@ function Songs() {
     }
 
     try {
-      const response = await axios.post(import.meta.env.VITE_API_FAV_ADD, {
+      const response = await axios.post(API_ENDPOINTS.favorites.add(), {
         tenant_id: tenantId,
         song_uuid: songUuid,
       }, {

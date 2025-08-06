@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_ENDPOINTS } from "./config/api";
 import { FaTimes } from "react-icons/fa"; // Importa el ícono de "X" desde react-icons
 import TopNavigation from "./TopNavigation";
 import Sidebar from "./Sidebar";
@@ -22,7 +23,7 @@ function Favorites() {
       }
 
       // Realizar la petición a la API
-      const response = await axios.post(import.meta.env.VITE_API_FAV_MINE, {
+      const response = await axios.post(API_ENDPOINTS.favorites.mine(), {
         tenant_id: tenantId,
       });
 
@@ -50,7 +51,7 @@ function Favorites() {
       }
 
       // Realizar la petición a la API para eliminar la canción
-      const response = await axios.post(import.meta.env.VITE_API_FAV_REMOVE, {
+      const response = await axios.post(API_ENDPOINTS.favorites.remove(), {
         tenant_id: tenantId,
         song_uuid: songUuid,
       });

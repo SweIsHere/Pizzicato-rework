@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TopNavigation from "./TopNavigation"; 
 import Sidebar from "./Sidebar"; 
+import { API_ENDPOINTS } from "./config/api"; 
 
 function Artists() {
   const [artists, setArtists] = useState([]);
@@ -14,7 +15,7 @@ function Artists() {
     setError(null);
     try {
       console.log("Sending request to fetch artists by name:", name);  // Log for name search
-      const response = await fetch(import.meta.env.VITE_API_BYARTIST_NAME, {
+      const response = await fetch(API_ENDPOINTS.artists.byName(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -45,7 +46,7 @@ function Artists() {
     setError(null);
     try {
       console.log("Sending request to fetch artists by country:", country);  // Log for country search
-      const response = await fetch(import.meta.env.VITE_API_BYARTIST_COUNTRY, {
+      const response = await fetch(API_ENDPOINTS.artists.byCountry(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TopNavigation from "./TopNavigation";
 import Sidebar from "./Sidebar";
 import axios from "axios";
+import { API_ENDPOINTS } from "./config/api";
 import { FaPlay } from "react-icons/fa"; // Importa el ícono de play desde react-icons/fa
 
 function Podcasts() {
@@ -24,7 +25,7 @@ function Podcasts() {
   useEffect(() => {
     const fetchPodcasts = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_API_PODCAST_ALL);
+        const response = await axios.get(API_ENDPOINTS.podcasts.all());
         const data = JSON.parse(response.data.body);
         setPodcasts(data.items);
 
@@ -49,7 +50,7 @@ function Podcasts() {
     }
 
     try {
-      const response = await axios.post(import.meta.env.VITE_API_PODCAST_GENRE, { genre });
+      const response = await axios.post(API_ENDPOINTS.podcasts.byGenre(), { genre });
       const data = JSON.parse(response.data.body);
       setFilteredPodcasts(data.items);
     } catch (error) {
