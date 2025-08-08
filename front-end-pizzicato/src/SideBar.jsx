@@ -18,7 +18,11 @@ function Sidebar() {
               ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
               : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
           }`}>
-            <img src="src/assets/icons/FClef 2.png" alt="Account" className="h-10 w-10 transition-transform group-hover:scale-110" />
+            <img
+              src="src/assets/icons/FClef 2.png"
+              alt="Account"
+              className="h-10 w-10 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+            />
           </div>
           <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
             darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -32,7 +36,11 @@ function Sidebar() {
                 ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
                 : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
             }`}>
-              <img src="src/assets/icons/home.png" alt="Home" className="h-6 w-6 transition-transform group-hover:scale-110" />
+              <img
+                src="src/assets/icons/home.png"
+                alt="Home"
+                className="h-6 w-6 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+              />
             </div>
             <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -45,7 +53,11 @@ function Sidebar() {
                 ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
                 : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
             }`}>
-              <img src="src/assets/icons/artist.png" alt="Artists" className="h-6 w-6 transition-transform group-hover:scale-110" />
+              <img
+                src="src/assets/icons/artist.png"
+                alt="Artists"
+                className="h-6 w-6 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+              />
             </div>
             <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -58,7 +70,11 @@ function Sidebar() {
                 ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
                 : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
             }`}>
-              <img src="src/assets/icons/Music.png" alt="Songs" className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <img
+                src="src/assets/icons/Music.png"
+                alt="Songs"
+                className="h-5 w-5 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+              />
             </div>
             <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -71,7 +87,11 @@ function Sidebar() {
                 ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
                 : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
             }`}>
-              <img src="src/assets/icons/Music Square.png" alt="Albums" className="h-6 w-6 transition-transform group-hover:scale-110" />
+              <img
+                src="src/assets/icons/Music Square.png"
+                alt="Albums"
+                className="h-6 w-6 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+              />
             </div>
             <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -84,7 +104,11 @@ function Sidebar() {
                 ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
                 : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
             }`}>
-              <img src="src/assets/icons/podcast.png" alt="Podcasts" className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <img
+                src="src/assets/icons/podcast.png"
+                alt="Podcasts"
+                className="h-5 w-5 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+              />
             </div>
             <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
@@ -97,7 +121,11 @@ function Sidebar() {
                 ? 'group-hover:bg-gray-700/40 border-gray-600/30 group-hover:border-gray-500/50 group-hover:shadow-lg' 
                 : 'group-hover:bg-gray-200/40 border-gray-300/30 group-hover:border-gray-400/50 group-hover:shadow-md'
             }`}>
-              <img src="src/assets/icons/favorites.png" alt="Favorites" className="h-5 w-5 transition-transform group-hover:scale-110" />
+              <img
+                src="src/assets/icons/favorites.png"
+                alt="Favorites"
+                className="h-5 w-5 transition-transform group-hover:scale-110 filter transition dark:invert dark:brightness-200 dark:contrast-125"
+              />
             </div>
             <span className={`text-xs font-medium mt-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 ${
               darkMode ? 'text-gray-300' : 'text-gray-700'

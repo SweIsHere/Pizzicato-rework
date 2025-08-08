@@ -45,7 +45,7 @@ function LoadingPage() {
             <img
               src="http://media.proprofs.com/images/FC/user_images/misc/8565128792.gif"
               alt="Loading"
-              className="h-12 w-12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-7 rounded-full"
+              className="h-12 w-12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-7 rounded-full filter transition dark:invert dark:brightness-200 dark:contrast-125"
             />
           </div>
         </div>
