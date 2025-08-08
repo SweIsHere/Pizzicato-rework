@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Para redirigir
 import { API_ENDPOINTS } from './config/api';
+import { useTheme } from './context/ThemeContext';
 import {
   FaSearch,
   FaHashtag,
@@ -17,6 +18,7 @@ const TopNavigation = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');  // Para el término de búsqueda
   const navigate = useNavigate();  // Hook para la redirección
+  const { darkMode } = useTheme(); // Usar el contexto del tema
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -82,8 +84,12 @@ const TopNavigation = () => {
   };
 
   return (
-    <div className="top-navigation font-inria italic  flex items-center justify-between p-4 bg-white border-b border-gray-200">
-      <div className="flex items-center">
+    <div className={`top-navigation font-inria italic flex items-center justify-between p-4 backdrop-blur-lg border-b transition-all duration-300 ${
+      darkMode 
+        ? 'bg-gray-900/80 border-gray-700/50 text-white shadow-xl' 
+        : 'bg-white/80 border-gray-200/50 text-black shadow-lg'
+    }`}>
+      <div className="flex items-center space-x-3">
         <HashtagIcon />
         <Title username={username} />
       </div>
@@ -102,36 +108,114 @@ const TopNavigation = () => {
 };
 
 const ThemeIcon = () => {
-  const [darkTheme, setDarkTheme] = useState(false);
-  const handleMode = () => setDarkTheme(!darkTheme);
+  const { darkMode, toggleTheme } = useTheme();
+  
   return (
-    <span onClick={handleMode}>
-      {darkTheme ? (
-        <FaSun size="24" className="top-navigation-icon" />
+    <span 
+      onClick={toggleTheme} 
+      className={`cursor-pointer transition-all duration-300 p-2 rounded-xl backdrop-blur-sm border hover:scale-110 ${
+        darkMode 
+          ? 'hover:bg-gray-700/40 border-gray-600/30 hover:border-gray-500/50 hover:shadow-lg' 
+          : 'hover:bg-gray-200/40 border-gray-300/30 hover:border-gray-400/50 hover:shadow-md'
+      }`}
+      title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {darkMode ? (
+        <FaSun size="20" className="text-yellow-400 hover:text-yellow-300 transition-colors duration-300" />
       ) : (
-        <FaMoon size="24" className="top-navigation-icon" />
+        <FaMoon size="20" className="text-gray-600 hover:text-gray-500 transition-colors duration-300" />
       )}
     </span>
   );
 };
 
-const Search = ({ searchTerm, setSearchTerm, handleSearch }) => (
-  <div className="search flex  font-inria italic items-center bg-gray-200 rounded-full px-3 py-1 w-96 border border-black">
-    <input
-      className="search-input font-inria italic  bg-transparent outline-none w-full mr-2"
-      type="text"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      placeholder="Search..."
-      onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-    />
-    <FaSearch size="18" className="text-gray-500" onClick={handleSearch} />
-  </div>
-);
+const Search = ({ searchTerm, setSearchTerm, handleSearch }) => {
+  const { darkMode } = useTheme();
+  
+  return (
+    <div className={`search flex font-inria italic items-center rounded-2xl px-4 py-2 w-96 backdrop-blur-sm border transition-all duration-300 ${
+      darkMode 
+        ? 'bg-gray-800/40 border-gray-600/30 text-white focus-within:border-gray-500/50 focus-within:shadow-lg' 
+        : 'bg-gray-100/40 border-gray-300/30 text-black focus-within:border-gray-400/50 focus-within:shadow-md'
+    }`}>
+      <input
+        className={`search-input font-inria italic bg-transparent outline-none w-full mr-2 placeholder-gray-500 transition-colors duration-300 ${
+          darkMode ? 'text-white placeholder-gray-400' : 'text-black placeholder-gray-500'
+        }`}
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search..."
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+      />
+      <FaSearch 
+        size="16" 
+        className={`cursor-pointer transition-all duration-300 hover:scale-110 ${
+          darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-600'
+        }`} 
+        onClick={handleSearch} 
+      />
+    </div>
+  );
+};
 
-const BellIcon = () => <FaRegBell size="24" className="top-navigation-icon" />;
-const UserCircle = () => <FaUserCircle size="24" className="top-navigation-icon" />;
-const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
-const Title = ({ username }) => <h5 className="title-text">{username}</h5>;
+const BellIcon = () => {
+  const { darkMode } = useTheme();
+  return (
+    <span className={`cursor-pointer transition-all duration-300 p-2 rounded-xl backdrop-blur-sm border hover:scale-110 ${
+      darkMode 
+        ? 'hover:bg-gray-700/40 border-gray-600/30 hover:border-gray-500/50 hover:shadow-lg' 
+        : 'hover:bg-gray-200/40 border-gray-300/30 hover:border-gray-400/50 hover:shadow-md'
+    }`}>
+      <FaRegBell 
+        size="18" 
+        className={`transition-colors duration-300 ${
+          darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-black'
+        }`}
+      />
+    </span>
+  );
+};
+
+const UserCircle = () => {
+  const { darkMode } = useTheme();
+  return (
+    <span className={`cursor-pointer transition-all duration-300 p-2 rounded-xl backdrop-blur-sm border hover:scale-110 ${
+      darkMode 
+        ? 'hover:bg-gray-700/40 border-gray-600/30 hover:border-gray-500/50 hover:shadow-lg' 
+        : 'hover:bg-gray-200/40 border-gray-300/30 hover:border-gray-400/50 hover:shadow-md'
+    }`}>
+      <FaUserCircle 
+        size="18" 
+        className={`transition-colors duration-300 ${
+          darkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-black'
+        }`}
+      />
+    </span>
+  );
+};
+
+const HashtagIcon = () => {
+  const { darkMode } = useTheme();
+  return (
+    <FaHashtag 
+      size="18" 
+      className={`transition-colors duration-300 ${
+        darkMode ? 'text-gray-300' : 'text-gray-600'
+      }`}
+    />
+  );
+};
+
+const Title = ({ username }) => {
+  const { darkMode } = useTheme();
+  return (
+    <h5 className={`ml-2 font-medium text-lg transition-colors duration-300 ${
+      darkMode ? 'text-white' : 'text-black'
+    }`}>
+      {username}
+    </h5>
+  );
+};
 
 export default TopNavigation;

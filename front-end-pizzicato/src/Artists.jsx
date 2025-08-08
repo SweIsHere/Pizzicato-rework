@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TopNavigation from "./TopNavigation"; 
-import Sidebar from "./Sidebar"; 
+import Sidebar from "./Sidebar";
 import { API_ENDPOINTS } from "./config/api"; 
 
 function Artists() {

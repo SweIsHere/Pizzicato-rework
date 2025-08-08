@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
 import App from "./App";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
@@ -25,29 +26,30 @@ const ProtectedRoute = ({ children }) => {
 
 // Renderizado inicial
 root.render(
-  <Router>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/signin" element={<SignIn />} />
-      <Route
-        path="/fav"
-        element={
-          <ProtectedRoute>
-            <Fav />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/loading" element={<LoadingPage />} />
-      <Route path="/landingPage" element={<LandingPage />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/artists" element={<Artists />} />
-      <Route path="/songs" element={<Songs />} />
-      <Route path="/albums" element={<Albums />} />
-      <Route path="/podcast" element={<Podcasts />} />
-      <Route path= "/favorites" element={<Favorites />} />
-
-    </Routes>
-  </Router>
+  <ThemeProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route
+          path="/fav"
+          element={
+            <ProtectedRoute>
+              <Fav />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/loading" element={<LoadingPage />} />
+        <Route path="/landingPage" element={<LandingPage />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/artists" element={<Artists />} />
+        <Route path="/songs" element={<Songs />} />
+        <Route path="/albums" element={<Albums />} />
+        <Route path="/podcast" element={<Podcasts />} />
+        <Route path= "/favorites" element={<Favorites />} />
+      </Routes>
+    </Router>
+  </ThemeProvider>
 );
