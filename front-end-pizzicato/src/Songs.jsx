@@ -3,6 +3,7 @@ import TopNavigation from "./TopNavigation";
 import Sidebar from "./Sidebar";
 import axios from "axios";
 import { API_ENDPOINTS } from "./config/api";
+import { useTheme } from "./context/ThemeContext";
 
 function Songs() {
   const [songs, setSongs] = useState([]);
@@ -13,6 +14,7 @@ function Songs() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { darkMode } = useTheme();
 
   //   readable format
   const formatDuration = (seconds) => {
@@ -127,20 +129,48 @@ function Songs() {
   const displaySongs = selectedGenre ? filteredSongs : songs;
 
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex-1 font-inria flex flex-col ml-20">
-        <TopNavigation />
-        <main className="flex-1 p-6 overflow-y-auto">
-          <h1 className="text-2xl font-bold mb-6">Songs</h1>
+    <div
+      className={`flex flex-col min-h-screen transition-colors duration-300 ${
+        darkMode
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-black"
+          : "bg-gradient-to-br from-gray-50 via-white to-gray-100"
+      }`}
+    >
+      <TopNavigation />
+      <div className="flex flex-1">
+        <Sidebar />
+        <div className="flex-1 font-inria p-8 ml-28">
+          <div
+            className={`backdrop-blur-sm rounded-3xl p-8 border transition-all duration-300 h-full ${
+              darkMode
+                ? "bg-gray-800/30 border-gray-700/50 shadow-2xl"
+                : "bg-white/40 border-gray-200/50 shadow-xl"
+            }`}
+          >
+            <h1
+              className={`text-3xl font-inria font-semibold mb-6 transition-colors duration-300 ${
+                darkMode ? "text-white" : "text-gray-800"
+              }`}
+            >
+              Songs
+            </h1>
 
           <div className="font-inria mb-6">
-            <label htmlFor="genre-select" className="mr-4">Filter by Genre:</label>
+            <label
+              htmlFor="genre-select"
+              className={`mr-4 ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+            >
+              Filter by Genre:
+            </label>
             <select
               id="genre-select"
               value={selectedGenre}
               onChange={(e) => handleGenreFilter(e.target.value)}
-              className="font-inria p-2 border rounded"
+              className={`font-inria p-2 rounded border transition-colors duration-300 ${
+                darkMode
+                  ? "bg-gray-900/60 text-white placeholder-gray-400 border-gray-700"
+                  : "bg-white/70 text-gray-800 placeholder-gray-500 border-gray-300"
+              }`}
             >
               <option value="">All Genres</option>
               {genres.map((genre) => (
@@ -154,17 +184,25 @@ function Songs() {
             <button
               onClick={() => setPage((prevPage) => Math.max(prevPage - 1, 1))}
               disabled={page === 1}
-              className="font-inria px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition duration-300 disabled:opacity-50"
+              className={`font-inria px-4 py-2 rounded-full transition duration-300 disabled:opacity-50 ${
+                darkMode
+                  ? "bg-gray-700 text-white hover:bg-gray-600"
+                  : "bg-gray-300 text-black hover:bg-gray-400"
+              }`}
             >
               Previous
             </button>
-            <span className="font-inria px-4 py-2 text-gray-800">
+            <span className={`font-inria px-4 py-2 ${darkMode ? "text-gray-300" : "text-gray-800"}`}>
               Page {page} of {totalPages}
             </span>
             <button
               onClick={() => setPage((prevPage) => Math.min(prevPage + 1, totalPages))}
               disabled={page === totalPages}
-              className="font-inria px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition duration-300 disabled:opacity-50"
+              className={`font-inria px-4 py-2 rounded-full transition duration-300 disabled:opacity-50 ${
+                darkMode
+                  ? "bg-gray-700 text-white hover:bg-gray-600"
+                  : "bg-gray-300 text-black hover:bg-gray-400"
+              }`}
             >
               Next
             </button>
@@ -173,19 +211,23 @@ function Songs() {
           {/* Song Grid */}
           <div className="font-inria grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {isLoading ? (
-              <p className="font-inria text-lg text-gray-600 mb-6">Loading...</p>
+              <p className={`font-inria text-lg mb-6 ${darkMode ? "text-gray-300" : "text-gray-600"}`}>Loading...</p>
             ) : error ? (
-              <p className="font-inria text-lg text-red-600 mb-6">{error}</p>
+              <p className="font-inria text-lg text-red-500 mb-6">{error}</p>
             ) : (
               displaySongs.map((song) => (
                 <div
                   key={song.song_uuid}
-                  className="font-inria bg-white border border-gray-300 rounded-xl p-4 shadow-lg hover:shadow-xl transition duration-300"
+                  className={`font-inria rounded-xl p-4 shadow-lg hover:shadow-xl transition duration-300 border ${
+                    darkMode
+                      ? "bg-gray-800/50 border-gray-700/50 text-white"
+                      : "bg-white/70 border-gray-200/60 text-gray-800"
+                  }`}
                 >
-                  <h2 className="text-xl font-inria text-gray-800">{song.name}</h2>
-                  <p className="text-gray-600 font-inria">Artist: {song.artist_id}</p>
-                  <p className="text-gray-600 font-inria">Genre: {song.genre}</p>
-                  <p className="text-gray-600 font-inria">
+                  <h2 className="text-xl font-inria">{song.name}</h2>
+                  <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} font-inria`}>Artist: {song.artist_id}</p>
+                  <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} font-inria`}>Genre: {song.genre}</p>
+                  <p className={`${darkMode ? "text-gray-300" : "text-gray-600"} font-inria`}>
                     Duration: {formatDuration(song.data.duration)}
                   </p>
                   <p
@@ -195,7 +237,7 @@ function Songs() {
                   </p>
                   <button
                     onClick={() => handleAddToFavorites(song.song_uuid)}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
                   >
                     Add to Favorites
                   </button>
@@ -205,15 +247,16 @@ function Songs() {
           </div>
 
           {displaySongs.length === 0 && !isLoading && (
-            <p className="text-center font-inria text-gray-500 mt-10">
+            <p className={`text-center font-inria mt-10 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
               {selectedGenre
                 ? `No songs found in the ${selectedGenre} genre.`
                 : "No songs available."}
             </p>
           )}
-        </main>
+        </div>
       </div>
     </div>
+  </div>
   );
 }
 

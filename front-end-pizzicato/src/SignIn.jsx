@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_ENDPOINTS } from "./config/api";
+import { useTheme } from "./context/ThemeContext";
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ function SignIn() {
   const [errorMessage, setErrorMessage] = useState(""); // Estado para el mensaje de error
 
   const navigate = useNavigate();
+  const { darkMode } = useTheme();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,20 +51,32 @@ function SignIn() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="max-w-md w-full px-8 py-8 bg-white rounded-xl shadow-lg">
-        <h1 className="text-4xl font-inria italic text-black mb-8">Sign In</h1>
+    <div
+      className={`flex items-center justify-center min-h-screen transition-colors duration-300 ${
+        darkMode
+          ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-black'
+          : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'
+      }`}
+    >
+      <div
+        className={`max-w-md w-full px-8 py-8 rounded-3xl backdrop-blur-lg border transition-all duration-300 ${
+          darkMode
+            ? 'bg-gray-800/40 border-gray-700/50 shadow-2xl'
+            : 'bg-white/40 border-gray-200/60 shadow-xl'
+        }`}
+      >
+        <h1 className={`text-4xl font-inria italic mb-8 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Sign In</h1>
         
         {/* Si hay un mensaje de error, mostrarlo */}
         {errorMessage && (
-          <div className="mb-4 p-4 bg-red-500 text-white rounded-md">
+          <div className="mb-4 p-4 bg-red-500/90 text-white rounded-md">
             <p>{errorMessage}</p>
           </div>
         )}
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-lg font-inria italic text-gray-600 font-medium mb-2">
+            <label htmlFor="email" className={`block text-lg font-inria italic font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               E-mail
             </label>
             <input
@@ -71,12 +85,16 @@ function SignIn() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className={`w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 transition-colors duration-300 ${
+                darkMode
+                  ? 'bg-gray-900/60 text-white placeholder-gray-400 border border-gray-700 focus:ring-gray-500'
+                  : 'bg-white/70 text-gray-800 placeholder-gray-500 border border-gray-300 focus:ring-gray-500'
+              }`}
               required
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-lg font-inria italic text-gray-600 font-medium mb-2">
+            <label htmlFor="password" className={`block text-lg font-inria italic font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               Password
             </label>
             <input
@@ -85,7 +103,11 @@ function SignIn() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className={`w-full px-4 py-3 rounded-md focus:outline-none focus:ring-2 transition-colors duration-300 ${
+                darkMode
+                  ? 'bg-gray-900/60 text-white placeholder-gray-400 border border-gray-700 focus:ring-gray-500'
+                  : 'bg-white/70 text-gray-800 placeholder-gray-500 border border-gray-300 focus:ring-gray-500'
+              }`}
               required
             />
           </div>

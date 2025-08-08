@@ -4,12 +4,14 @@ import Sidebar from "./Sidebar";
 import axios from "axios";
 import { API_ENDPOINTS } from "./config/api";
 import { FaPlay } from "react-icons/fa"; // Importa el ícono de play desde react-icons/fa
+import { useTheme } from "./context/ThemeContext";
 
 function Podcasts() {
   const [podcasts, setPodcasts] = useState([]);
   const [filteredPodcasts, setFilteredPodcasts] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("");
   const [genres, setGenres] = useState([]);
+  const { darkMode } = useTheme();
 
   // Convert duration in seconds to a readable format
   const formatDuration = (seconds) => {
@@ -62,21 +64,38 @@ function Podcasts() {
   const displayPodcasts = selectedGenre ? filteredPodcasts : podcasts;
 
   return (
-    <div className="flex h-screen font-inria">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <TopNavigation />
-        <main className="flex-1 p-6 overflow-y-auto">
-          <h1 className="text-2xl font-bold mb-6">Podcasts</h1>
+    <div
+      className={`flex flex-col min-h-screen transition-colors duration-300 ${
+        darkMode
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-black"
+          : "bg-gradient-to-br from-gray-50 via-white to-gray-100"
+      }`}
+    >
+      <TopNavigation />
+      <div className="flex flex-1 font-inria">
+        <Sidebar />
+        <div className="flex-1 p-8 ml-28">
+          <div
+            className={`backdrop-blur-sm rounded-3xl p-8 border transition-all duration-300 h-full ${
+              darkMode
+                ? "bg-gray-800/30 border-gray-700/50 shadow-2xl"
+                : "bg-white/40 border-gray-200/50 shadow-xl"
+            }`}
+          >
+          <h1 className={`text-3xl font-semibold mb-6 ${darkMode ? "text-white" : "text-gray-800"}`}>Podcasts</h1>
           
           {/* Genre Filter */}
           <div className="mb-6">
-            <label htmlFor="genre-select" className="mr-4">Filter by Genre:</label>
+            <label htmlFor="genre-select" className={`mr-4 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>Filter by Genre:</label>
             <select 
               id="genre-select"
               value={selectedGenre}
               onChange={(e) => handleGenreFilter(e.target.value)}
-              className="p-2 border rounded"
+              className={`p-2 rounded border transition-colors duration-300 ${
+                darkMode
+                  ? "bg-gray-900/60 text-white placeholder-gray-400 border-gray-700"
+                  : "bg-white/70 text-gray-800 placeholder-gray-500 border-gray-300"
+              }`}
             >
               <option value="">All Genres</option>
               {genres.map((genre) => (
@@ -90,16 +109,18 @@ function Podcasts() {
             {displayPodcasts.map((podcast) => (
               <div 
                 key={podcast.podcast_uuid} 
-                className="border rounded-lg p-4 shadow-md hover:shadow-xl transition-shadow relative"
+                className={`rounded-xl p-4 shadow-md hover:shadow-xl transition-shadow relative border ${
+                  darkMode ? "bg-gray-800/50 border-gray-700/50 text-white" : "bg-white/70 border-gray-200/60 text-gray-800"
+                }`}
                 title={`Duration: ${formatDuration(podcast.data.duration)}`}
               >
                 <h2 className="text-xl font-semibold mb-2">{podcast.name}</h2>
                 <div className="flex items-center mb-2">
-                  <span className="mr-2">Duration:</span>
-                  <span>{formatDuration(podcast.data.duration)}</span>
+                  <span className={`${darkMode ? "text-gray-300" : "text-gray-600"} mr-2`}>Duration:</span>
+                  <span className={`${darkMode ? "text-gray-200" : "text-gray-700"}`}>{formatDuration(podcast.data.duration)}</span>
                 </div>
                 {podcast.data.explicit && (
-                  <div className="text-red-600 font-bold">Explicit</div>
+                  <div className="text-red-500 font-bold">Explicit</div>
                 )}
 
                 {/* Play Button in bottom right corner */}
@@ -114,13 +135,14 @@ function Podcasts() {
           </div>
 
           {displayPodcasts.length === 0 && (
-            <p className="text-center text-gray-500 mt-10">
+            <p className={`text-center mt-10 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
               {selectedGenre 
                 ? `No podcasts found in the ${selectedGenre} genre.` 
                 : "No podcasts available."}
             </p>
           )}
-        </main>
+          </div>
+        </div>
       </div>
     </div>
   );

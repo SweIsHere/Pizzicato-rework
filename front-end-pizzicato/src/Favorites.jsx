@@ -4,11 +4,13 @@ import { API_ENDPOINTS } from "./config/api";
 import { FaTimes } from "react-icons/fa"; // Importa el ícono de "X" desde react-icons
 import TopNavigation from "./TopNavigation";
 import Sidebar from "./Sidebar";
+import { useTheme } from "./context/ThemeContext";
 
 function Favorites() {
   const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { darkMode } = useTheme();
 
   // Función para cargar las canciones favoritas
   const loadFavorites = async () => {
@@ -73,12 +75,25 @@ function Favorites() {
   }, []);
 
   return (
-    <div className="flex flex-col  font-inria h-screen">
+    <div
+      className={`flex flex-col min-h-screen font-inria transition-colors duration-300 ${
+        darkMode
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-black"
+          : "bg-gradient-to-br from-gray-50 via-white to-gray-100"
+      }`}
+    >
       <TopNavigation />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 p-8 ml-64">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Favorites Songs</h1>
+        <div className="flex-1 p-8 ml-28">
+          <div
+            className={`backdrop-blur-sm rounded-3xl p-8 border transition-all duration-300 h-full ${
+              darkMode
+                ? "bg-gray-800/30 border-gray-700/50 shadow-2xl"
+                : "bg-white/40 border-gray-200/50 shadow-xl"
+            }`}
+          >
+          <h1 className={`text-3xl font-bold mb-6 ${darkMode ? "text-white" : "text-gray-800"}`}>Favorites Songs</h1>
 
           {/* Mostrar el error si ocurrió */}
           {error && (
@@ -90,33 +105,35 @@ function Favorites() {
           {/* Si está cargando, mostrar el spinner */}
           {isLoading ? (
             <div className="text-center mt-10">
-              <p className="text-xl text-gray-500">Loading your fav...</p>
+              <p className={`${darkMode ? "text-gray-300" : "text-gray-500"} text-xl`}>Loading your fav...</p>
             </div>
           ) : (
             <div className="space-y-4">
               {/* Si no hay canciones favoritas */}
               {favorites.length === 0 ? (
-                <p className="text-center text-gray-500">Exigent listener. No fav founded.</p>
+                <p className={`text-center ${darkMode ? "text-gray-400" : "text-gray-500"}`}>Exigent listener. No fav founded.</p>
               ) : (
                 // Lista de canciones favoritas con scroll
                 <div className="max-h-96 overflow-y-auto">
                   {favorites.map((favorite) => (
                     <div
                       key={favorite.song_uuid}
-                      className="flex items-center justify-between bg-white p-4 rounded-md shadow-md hover:shadow-lg transition-shadow"
+                      className={`flex items-center justify-between p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow border ${
+                        darkMode ? "bg-gray-800/50 border-gray-700/50 text-white" : "bg-white/70 border-gray-200/60 text-gray-800"
+                      }`}
                     >
                       <div>
-                        <p className="font-semibold text-gray-800">Song {favorite.song_uuid}</p>
-                        <p className="text-gray-600">Added: {new Date(favorite.date_added).toLocaleString()}</p>
+                        <p className="font-semibold">Song {favorite.song_uuid}</p>
+                        <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>Added: {new Date(favorite.date_added).toLocaleString()}</p>
                       </div>
 
                       <div className="flex items-center space-x-2">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
                           Play
                         </button>
                         {/* Botón de eliminación */}
                         <button
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-500 hover:text-red-400"
                           onClick={() => removeFavorite(favorite.song_uuid)}
                         >
                           <FaTimes size={20} />
@@ -128,6 +145,7 @@ function Favorites() {
               )}
             </div>
           )}
+          </div>
         </div>
       </div>
     </div>

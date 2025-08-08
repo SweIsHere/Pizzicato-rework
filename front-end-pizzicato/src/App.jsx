@@ -10,8 +10,6 @@ function App() {
   const navigate = useNavigate();
   const { darkMode } = useTheme();
 
-  
-
   const handleSignInClick = () => {
     navigate("/signin");
   }  
@@ -21,14 +19,26 @@ function App() {
   };
 
   return (
-    <div className={`flex items-center justify-center min-h-screen m-0 p-0 relative transition-all duration-300 ${
+    <div className={`flex items-center justify-center min-h-screen w-screen overflow-x-hidden m-0 p-0 relative transition-all duration-300 ${
       darkMode 
-        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-black' 
-        : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'
+        ? 'bg-gradient-to-br from-slate-900 via-gray-900 to-zinc-900' 
+        : 'bg-gradient-to-br from-gray-100 via-slate-50 to-zinc-100'
     }`}>
+      {/* Animated pixel-art waves background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div className={`${darkMode ? 'waves-dark' : 'waves-light'} waves`}>
+          <span className="wave" style={{ '--size': '220px' }} />
+          <span className="wave" style={{ '--size': '320px' }} />
+          <span className="wave" style={{ '--size': '420px' }} />
+          <span className="wave" style={{ '--size': '520px' }} />
+          <span className="wave" style={{ '--size': '640px' }} />
+          <span className="wave" style={{ '--size': '780px' }} />
+        </div>
+      </div>
+
       {/* Pantalla de bienvenida */}
       {!isLoading && !isContentVisible && (
-        <div className={`backdrop-blur-lg rounded-3xl p-12 border transition-all duration-300 ${
+        <div className={`relative z-10 backdrop-blur-lg rounded-3xl p-12 border transition-all duration-300 ${
           darkMode 
             ? 'bg-gray-800/30 border-gray-700/50 shadow-2xl' 
             : 'bg-white/30 border-gray-200/50 shadow-xl'

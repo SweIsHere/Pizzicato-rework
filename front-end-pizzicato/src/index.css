@@ -12,22 +12,24 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%; /* Asegura que el body ocupe toda la altura */
-  background-color: #ffffff;
+  background-color: transparent; /* Permite que el gradiente del App cubra todo */
   min-height: 100vh;
+  width: 100%;
 }
 
-
-
-
-
-
+/* Asegura que el contenedor raíz ocupe toda la altura */
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
 
 body {
-  display: grid; /* Usamos Grid para centrar todo */
-  place-items: center; /* Centra todo el contenido en ambas direcciones */
+  /* Quitamos el grid que centraba todo y hacía que el fondo fuera una "lámina" */
+  display: block; /* Antes: display: grid */
+  /* place-items: center;  Eliminado */
   min-width: 320px; /* Asegura que el contenido tenga un ancho mínimo */
   min-height: 100vh; /* Asegura que el body ocupe al menos la altura de la pantalla */
-  background-color: #ffffff; /* Fondo de la página */
+  background-color: transparent; /* Deja ver el gradiente del App */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -251,6 +253,68 @@ h1 {
     transition duration-300 ease-in-out 
     hover:text-pink-500 dark:hover:text-gray-500
     cursor-pointer;
+  }
+
+  /* Pixel-art circular waves */
+  .waves {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 140vmax;
+    height: 140vmax;
+    pointer-events: none;
+  }
+
+  .waves-light {
+    --w1: rgba(99, 101, 241, 0.945);  /* indigo-500 - más opaco */
+    --w2: rgb(236, 72, 154);  /* pink-500 - más opaco */
+    --w3: rgba(56, 191, 248, 0.932);  /* sky-400 - más opaco */
+  }
+
+  .waves-dark {
+    --w1: rgba(99, 101, 241, 0.773);  /* indigo-500 */
+    --w2: rgba(236, 72, 154, 0.695);  /* pink-500 */
+    --w3: rgba(228, 233, 235, 0.923);  /* sky-400 */
+  }
+
+  .wave {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    border: 4px dashed currentColor; /* borde más grueso */
+    image-rendering: pixelated;
+    opacity: 0.6; /* más opacidad base */
+    will-change: transform, opacity;
+    animation: ripple 6s infinite;
+    animation-timing-function: steps(28, end);
+  }
+
+  /* Colores alternados por anillo */
+  .waves-light .wave:nth-child(3n+1) { color: var(--w1); }
+  .waves-light .wave:nth-child(3n+2) { color: var(--w2); }
+  .waves-light .wave:nth-child(3n)   { color: var(--w3); }
+
+  .waves-dark .wave:nth-child(3n+1) { color: var(--w1); }
+  .waves-dark .wave:nth-child(3n+2) { color: var(--w2); }
+  .waves-dark .wave:nth-child(3n)   { color: var(--w3); }
+
+  /* Stagger de ondas */
+  .wave:nth-child(1) { animation-delay: 0s; }
+  .wave:nth-child(2) { animation-delay: 1s; }
+  .wave:nth-child(3) { animation-delay: 2s; }
+  .wave:nth-child(4) { animation-delay: 3s; }
+  .wave:nth-child(5) { animation-delay: 4s; }
+  .wave:nth-child(6) { animation-delay: 5s; }
+
+  @keyframes ripple {
+    0%   { transform: translate(-50%, -50%) scale(0.35); opacity: 0.8; } /* inicio más visible */
+    60%  { opacity: 0.25; } /* medio más visible */
+    100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
   }
 }
 
