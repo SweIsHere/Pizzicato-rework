@@ -36,7 +36,7 @@ export const API_ENDPOINTS = {
     all: () => buildApiUrl('songs', '/songs/all'),
     byGenre: () => buildApiUrl('songs', '/songs/genre'),
     byName: () => buildApiUrl('songs', '/songs/name'),
-    byId: () => buildApiUrl('songs', '/songs/id'),
+    
   },
   
   // Artistas

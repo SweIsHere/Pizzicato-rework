@@ -2,10 +2,12 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
+import { PlayerProvider } from "./context/PlayerContext";
+import PlayerBar from "./components/PlayerBar";
 import App from "./App";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
-import Fav from "./fav";
+import Fav from "./Fav";
 import LoadingPage from "./LoadingPage";
 import LandingPage from "./LandingPage";
 import Account from "./Account";
@@ -27,8 +29,9 @@ const ProtectedRoute = ({ children }) => {
 // Renderizado inicial
 root.render(
   <ThemeProvider>
-    <Router>
-      <Routes>
+    <PlayerProvider>
+      <Router>
+        <Routes>
         <Route path="/" element={<App />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
@@ -49,7 +52,9 @@ root.render(
         <Route path="/albums" element={<Albums />} />
         <Route path="/podcast" element={<Podcasts />} />
         <Route path= "/favorites" element={<Favorites />} />
-      </Routes>
-    </Router>
+        </Routes>
+        <PlayerBar />
+      </Router>
+    </PlayerProvider>
   </ThemeProvider>
 );

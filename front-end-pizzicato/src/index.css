@@ -53,8 +53,8 @@ h1 {
   .sidebar-icon {
     @apply relative flex items-center justify-center 
     h-12 w-12 mt-2 mb-2 mx-auto  
-  bg-gray-400 hover:bg-green-600 dark:bg-gray-800 
-  text-green-500 hover:text-white
+  bg-gray-400 hover:bg-indigo-600 dark:bg-gray-800 
+  text-indigo-400 hover:text-white
     hover:rounded-xl rounded-3xl
     transition-all duration-300 ease-linear
     cursor-pointer shadow-lg ;
@@ -143,7 +143,7 @@ h1 {
   }
 
   .post-selected {
-    @apply bg-green-400 dark:bg-gray-900
+    @apply bg-indigo-400 dark:bg-gray-900
     shadow-md;
   }
 
@@ -325,5 +325,5 @@ h1 {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 dark:bg-green-400;
+  @apply bg-gray-500 dark:bg-indigo-950;
 }
